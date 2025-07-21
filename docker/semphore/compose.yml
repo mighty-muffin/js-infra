@@ -22,9 +22,9 @@ services:
     volumes: 
      - semaphore-db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB= ${POSTGRES_DB}
-      - POSTGRES_PASSWORD= ${POSTGRES_PASSWORD}
-      - POSTGRES_USER= ${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
   semaphore:
     container_name: semaphore
     image: docker.io/semaphoreui/semaphore:v2.15.0
@@ -38,15 +38,15 @@ services:
     volumes:
       - "./config:/etc/semaphore"
     environment:
-      - SEMAPHORE_ADMIN_EMAIL= ${SEMAPHORE_ADMIN_EMAIL}
-      - SEMAPHORE_ADMIN_NAME= ${SEMAPHORE_ADMIN_NAME}
-      - SEMAPHORE_ADMIN_PASSWORD= ${SEMAPHORE_ADMIN_PASSWORD}
-      - SEMAPHORE_ADMIN= ${SEMAPHORE_ADMIN}
-      - SEMAPHORE_DB_DIALECT= ${SEMAPHORE_DB_DIALECT}
+      - SEMAPHORE_ADMIN_EMAIL=${SEMAPHORE_ADMIN_EMAIL}
+      - SEMAPHORE_ADMIN_NAME=${SEMAPHORE_ADMIN_NAME}
+      - SEMAPHORE_ADMIN_PASSWORD=${SEMAPHORE_ADMIN_PASSWORD}
+      - SEMAPHORE_ADMIN=${SEMAPHORE_ADMIN}
+      - SEMAPHORE_DB_DIALECT=${SEMAPHORE_DB_DIALECT}
       - SEMAPHORE_DB_HOST=postgres
       - SEMAPHORE_DB_PORT=5432
-      - SEMAPHORE_DB= ${POSTGRES_DB}
-      - TZ= UTC
+      - SEMAPHORE_DB=${POSTGRES_DB}
+      - TZ=UTC
     # labels:
     #   - "traefik.enable=true"
     #   - "traefik.http.routers.semaphore.entrypoints=https"

@@ -1,0 +1,37 @@
+---
+http:
+  # region middleware
+  middlewares:
+    default-headers:
+      headers:
+        browserXssFilter: true
+        contentTypeNosniff: true
+        customBrowserXSSValue: 0
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+        forceSTSHeader: true
+        frameDeny: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+    https-redirectscheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+    default-whitelist:
+      ipAllowList:
+        sourceRange:
+          - "10.0.0.0/8"
+          - "192.168.0.0/16"
+          - "172.17.0.0/24"
+    secured:
+      chain:
+        middlewares:
+          - default-whitelist
+          - default-headers
+
+  # region routers
+  routers:
+  # region services
+  services:

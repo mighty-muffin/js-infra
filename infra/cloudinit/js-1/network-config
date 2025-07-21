@@ -1,0 +1,13 @@
+# https://cloudinit.readthedocs.io/en/latest/topics/network-config.html
+
+version: 2
+ethernets:
+  eth0:
+    addresses:
+    - ${static_ip | mask}
+    nameservers:
+      addresses:
+      - ${dns_ip }
+    routes:
+        - to: default
+          via: ${gateway_ip}

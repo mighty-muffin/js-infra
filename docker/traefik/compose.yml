@@ -1,0 +1,47 @@
+---
+name: traefik
+
+networks: # docker network create proxy
+  proxy:
+    name: proxy
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: proxy
+    external: false
+
+services:
+  traefik:
+    container_name: traefik
+    image: docker.io/traefik:v3.3.6
+    restart: unless-stopped
+    networks:
+      - proxy
+    ports:
+      - "80:80"
+      - "443:443/tcp"
+    environment:
+      - CF_API_EMAIL= ${CF_API_EMAIL}
+      - CF_DNS_API_TOKEN= ${CF_DNS_API_TOKEN}
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./config/acme.json:/acme.json"
+      - "./config/config.yml:/config.yml:ro"
+      - "./config/traefik.yml:/traefik.yml:ro"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.traefik-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
+      - "traefik.http.routers.traefik-secure.rule=Host(`lb-1.local.mighty-muffin.io`)"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].main=local.mighty-muffin.io"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.local.mighty-muffin.io"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.traefik.rule=Host(`lb-1.local.mighty-muffin.io`)"

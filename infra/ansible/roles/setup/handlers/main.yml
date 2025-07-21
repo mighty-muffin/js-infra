@@ -1,0 +1,41 @@
+---
+- name: Start ntp
+  ansible.builtin.service:
+    name: ntp
+    state: started
+- name: Start qemu
+  ansible.builtin.service:
+    name: qemu-guest-agent
+    state: started
+- name: Restart unattended-upgrades
+  ansible.builtin.service:
+    name: unattended-upgrades.service
+    daemon_reload: true
+    enabled: true
+    state: restarted
+- name: Reboot
+  ansible.builtin.reboot:
+    msg: Rebooting nodes
+    reboot_timeout: 3600
+    test_command: uptime
+- name: Reload cloud-init
+  ansible.builtin.systemd:
+    name: cloud-init
+    daemon_reload: true
+- name: Reload ufw
+  community.general.ufw:
+    state: reloaded
+- name: Restart ssh
+  ansible.builtin.service:
+    name: ssh
+    state: restarted
+- name: Restart fail2ban
+  ansible.builtin.service:
+    name: fail2ban
+    state: restarted
+    enabled: true
+- name: Restart watchdog
+  ansible.builtin.service:
+    name: watchdog
+    state: restarted
+    enabled: true

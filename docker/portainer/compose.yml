@@ -1,0 +1,36 @@
+---
+name: portainer
+
+#
+# docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:lts
+#
+
+networks: # docker network create proxy
+  proxy:
+    name: proxy
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: proxy
+    external: true
+
+services:
+  portainer:
+    container_name: portainer
+    image: docker.io/portainer/portainer-ce:2.27.9
+    restart: unless-stopped
+    networks:
+      - proxy
+    env_file: .env
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./data:/data"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.portainer.entrypoints=https"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.local.mighty-muffin.io`)"
+      - "traefik.http.routers.portainer.service=portainer"
+      - "traefik.http.routers.portainer.tls=true"
+      - "traefik.http.services.portainer.loadbalancer.server.port=8000"
+      - "traefik.http.services.portainer.loadbalancer.server.port=9443"

@@ -1,0 +1,43 @@
+---
+- name: Setup js host
+  hosts:
+    - js
+  become: true
+  gather_facts: true
+  any_errors_fatal: false
+  pre_tasks:
+    - name: Ping machine
+      ansible.builtin.ping:
+  roles:
+    - role: setup
+    - role: docker
+  post_tasks:
+    - name: Status message
+      ansible.builtin.debug:
+        msg: Playbook ran without any issue.
+
+# - name: Setup js_control host
+#   hosts:
+#     - js_control
+#   become: true
+#   gather_facts: true
+#   any_errors_fatal: false
+#   roles:
+#     - role: js_control
+#   post_tasks:
+#     - name: Status message
+#       ansible.builtin.debug:
+#         msg: Playbook ran without any issue.
+
+# - name: Setup js_worker host
+#   hosts:
+#     - js_worker
+#   become: true
+#   gather_facts: true
+#   any_errors_fatal: false
+#   roles:
+#     - role: js_worker
+#   post_tasks:
+#     - name: Status message
+#       ansible.builtin.debug:
+#         msg: Playbook ran without any issue.

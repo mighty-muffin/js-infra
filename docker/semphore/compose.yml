@@ -1,5 +1,5 @@
 ---
-name: ansible
+name: semaphore
 
 networks: # docker network create proxy
   proxy:
@@ -10,12 +10,14 @@ networks: # docker network create proxy
     external: true
 
 services:
-  ansible:
-    container_name: ansible
-    image: docker.io/semaphoreui/semaphore:v2.14.10
+  semaphore:
+    container_name: semaphore
+    image: docker.io/semaphoreui/semaphore:v2.15.0
     restart: unless-stopped
-    networks:
-      - proxy
+    # networks:
+    #   - proxy
+    ports:
+      - 3000:3000
     environment:
       - SEMAPHORE_ADMIN_EMAIL= ${SEMAPHORE_ADMIN_EMAIL}
       - SEMAPHORE_ADMIN_NAME= ${SEMAPHORE_ADMIN_NAME}
@@ -27,8 +29,8 @@ services:
       - "./db:/var/lib/semaphore"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ansible.entrypoints=https"
-      - "traefik.http.routers.ansible.rule=Host(`ansible.local.irishlab.io`)"
-      - "traefik.http.routers.ansible.service=ansible"
-      - "traefik.http.routers.ansible.tls=true"
-      - "traefik.http.services.ansible.loadbalancer.server.port=3000"
+      - "traefik.http.routers.semaphore.entrypoints=https"
+      - "traefik.http.routers.semaphore.rule=Host(`semaphore.local.mighty-muffin.io`)"
+      - "traefik.http.routers.semaphore.service=semaphore"
+      - "traefik.http.routers.semaphore.tls=true"
+      - "traefik.http.services.semaphore.loadbalancer.server.port=3000"

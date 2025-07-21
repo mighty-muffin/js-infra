@@ -2,12 +2,12 @@
 name: cloudflared-tunnel
 
 networks: # docker network create proxy
-  proxy:
-    name: proxy
+  external:
+    name: external
     driver: bridge
     driver_opts:
-      com.docker.network.bridge.name: proxy
-    external: true
+      com.docker.network.bridge.name: external
+    external: false
 
 services:
   tunnel:
@@ -15,7 +15,7 @@ services:
     image: cloudflare/cloudflared:2025.4.0
     restart: unless-stopped
     networks:
-      - proxy
+      - external
     command: tunnel run
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN}

@@ -35,8 +35,6 @@ services:
     #   - proxy
     ports:
       - 3000:3000
-    volumes:
-      - "./config:/etc/semaphore"
     environment:
       - SEMAPHORE_ADMIN_EMAIL=${SEMAPHORE_ADMIN_EMAIL}
       - SEMAPHORE_ADMIN_NAME=${SEMAPHORE_ADMIN_NAME}

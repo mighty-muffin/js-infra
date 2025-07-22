@@ -1,0 +1,7 @@
+resource_group_name   = "my-rg-prod"
+location             = "eastus"
+container_image      = "ghcr.io/youruser/yourimage:prod"
+container_app_name   = "my-container-app-prod"
+cloudflare_zone      = "example.com"
+custom_domain        = "app.example.com"
+cloudflare_api_token = "your_prod_cloudflare_api_token"

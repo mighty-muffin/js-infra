@@ -1,0 +1,7 @@
+resource_group_name   = "my-rg-dev"
+location             = "eastus"
+container_image      = "ghcr.io/youruser/yourimage:dev"
+container_app_name   = "my-container-app-dev"
+cloudflare_zone      = "example.com"
+custom_domain        = "dev.example.com"
+cloudflare_api_token = "your_dev_cloudflare_api_token"

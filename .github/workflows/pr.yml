@@ -31,4 +31,4 @@ jobs:
 
     with:
       configuration_file: "-c ./.config/.ansible-lint.yml"
-      requirements_file: "./infra/ansible/collections/requirements.yml"
+      requirements_file: "infra/ansible/collections/requirements.yml"
